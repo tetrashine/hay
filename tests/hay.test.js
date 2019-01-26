@@ -48,7 +48,7 @@ test('check number isRequired', () => {
 });
 
 test('check oneOf', () => {
-  [1, "", true, false, [], function() {}].forEach(_ => {
+  [1, "", true, false, {}, [], function() {}].forEach(_ => {
     expect(hay.check(_, HayTypes.oneOf([
       HayTypes.number,
       HayTypes.string,
@@ -58,4 +58,31 @@ test('check oneOf', () => {
       HayTypes.func,
     ]))).toBe(true);
   });
+});
+
+test('check arrayOf', () => {
+  expect(hay.check([1], HayTypes.arrayOf.number)).toBe(true);
+  expect(hay.check([""], HayTypes.arrayOf.string)).toBe(true);
+  expect(hay.check([true], HayTypes.arrayOf.bool)).toBe(true);
+  expect(hay.check([{}], HayTypes.arrayOf.object)).toBe(true);
+  expect(hay.check([[]], HayTypes.arrayOf.array)).toBe(true);
+  expect(hay.check([function() {}], HayTypes.arrayOf.func)).toBe(true);
+});
+
+test('check shapeOf', () => {
+  expect(hay.check({
+    a: 9,
+    b: "asd",
+    c: true,
+    d: {},
+    e: [],
+    f: () => {},
+  }, HayTypes.shapeOf({
+    a: HayTypes.number,
+    b: HayTypes.string,
+    c: HayTypes.bool,
+    d: HayTypes.object,
+    e: HayTypes.array,
+    f: HayTypes.func,
+  }))).toBe(true);
 });
