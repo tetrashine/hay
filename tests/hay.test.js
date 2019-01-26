@@ -46,3 +46,16 @@ test('check number isRequired', () => {
   expect(hay.check(function() {}, HayTypes.func.isRequired)).toBe(true);
   expect(hay.check(null, HayTypes.func.isRequired)).toBe(false);
 });
+
+test('check oneOf', () => {
+  [1, "", true, false, [], function() {}].forEach(_ => {
+    expect(hay.check(_, HayTypes.oneOf([
+      HayTypes.number,
+      HayTypes.string,
+      HayTypes.bool,
+      HayTypes.object,
+      HayTypes.array,
+      HayTypes.func,
+    ]))).toBe(true);
+  });
+});
