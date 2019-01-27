@@ -19,9 +19,11 @@ const oneOf = (types) => (obj) => {
 };
 
 const shapeOf = template => obj => {
-  return Object.keys(template).every(key => {
-    return template[key](obj[key]);
-  });
+  return !Empty(obj) 
+    && (object(obj) && Object.keys(template).every(key => {
+      return template[key](obj[key]);
+    })) 
+    || (func(template) && template(obj));
 };
 
 const Empty = obj => obj === undefined || obj === null;

@@ -112,6 +112,11 @@ test('check arrayOf', () => {
 });
 
 test('check shapeOf', () => {
+  expect(hay.check(9, HayTypes.shapeOf(HayTypes.number))).toBe(true);
+  expect(hay.check("", HayTypes.shapeOf(HayTypes.string))).toBe(true);
+  expect(hay.check(true, HayTypes.shapeOf(HayTypes.bool))).toBe(true);
+  expect(hay.check(()=>{}, HayTypes.shapeOf(HayTypes.func))).toBe(true);
+
   expect(hay.check({
     a: 9,
     b: "asd",
@@ -128,6 +133,37 @@ test('check shapeOf', () => {
     f: HayTypes.func,
   }))).toBe(true);
 
+  expect(hay.check({
+    a: {
+      i: 9,
+      j: "",
+    },
+  }, HayTypes.shapeOf({
+    a: HayTypes.shapeOf({
+      i: HayTypes.number,
+      j: HayTypes.oneOf([
+        HayTypes.number,
+        HayTypes.string,
+      ]),
+    }),
+  }))).toBe(true);
+
+  expect(hay.check({
+    a: {
+      i: 9,
+      j: true,
+    },
+  }, HayTypes.shapeOf({
+    a: HayTypes.shapeOf({
+      i: HayTypes.number,
+      j: HayTypes.oneOf([
+        HayTypes.number,
+        HayTypes.string,
+      ]),
+    }),
+  }))).toBe(false);
+
+  expect(hay.check('', HayTypes.shapeOf(HayTypes.number))).toBe(false);
   expect(hay.check({
     a: "",
     b: "asd",
