@@ -1,8 +1,8 @@
 const number = (obj) => Empty(obj) || typeof(obj) === "number";
 const string = (obj) => Empty(obj) || typeof(obj) === "string";
 const bool = (obj) => Empty(obj) || typeof(obj) === "boolean";
-const object = (obj) => Empty(obj) || typeof(obj) === "object";
-const array = (obj) => Array.isArray(obj);
+const object = (obj) => Empty(obj) || typeof(obj) === "object" && !array(obj);
+const array = (obj) => Empty(obj) || Array.isArray(obj);
 const func = (obj) => Empty(obj) || {}.toString.call(obj) === '[object Function]';
 
 const mapping = {
