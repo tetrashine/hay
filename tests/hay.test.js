@@ -2,61 +2,85 @@ const { hay, HayTypes } = require('../src/hay');
 
 test('check number type', () => {
   [1, 0, 1.01, -123, undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.number)).toBe(true);
+    let results = hay.check(_, HayTypes.number);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
 
   ["Asd", [], {}, true, false, function() {}, ()=>{}].forEach(_ => {
-    expect(hay.check(_, HayTypes.number)).toBe(false);
+    let results = hay.check(_, HayTypes.number);
+    expect(results).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 
 test('check string type', () => {
   ["", "asd", undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.string)).toBe(true);
+    let results = hay.check(_, HayTypes.string);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
 
   [1, 0, 1.01, -123, [], {}, true, false, function() {}, ()=>{}].forEach(_ => {
-    expect(hay.check(_, HayTypes.string)).toBe(false);
+    let results = hay.check(_, HayTypes.string);
+    expect(results).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 
 test('check bool type', () => {
   [true, false, undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.bool)).toBe(true);
+    let results = hay.check(_, HayTypes.bool);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
 
   [1, 0, 1.01, -123, [], {}, "asd", function() {}, ()=>{}].forEach(_ => {
+    let results = hay.check(_, HayTypes.bool);
     expect(hay.check(_, HayTypes.bool)).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 
 test('check object type', () => {
   [{}, undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.object)).toBe(true);
+    let results = hay.check(_, HayTypes.object);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
 
   [1, 0, 1.01, -123, [], true, false, "asd", function() {}, ()=>{}].forEach(_ => {
-    expect(hay.check(_, HayTypes.object)).toBe(false);
+    let results = hay.check(_, HayTypes.object);
+    expect(results).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 
 test('check array type', () => {
   [[], [1,2,3], undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.array)).toBe(true);
+    let results = hay.check(_, HayTypes.array);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
   
   [1, 0, 1.01, -123, {}, true, false, "asd", function() {}, ()=>{}].forEach(_ => {
-    expect(hay.check(_, HayTypes.array)).toBe(false);
+    let results = hay.check(_, HayTypes.array);
+    expect(results).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 
 test('check function type', () => {
   [function() {}, ()=>{}, undefined, null].forEach(_ => {
-    expect(hay.check(_, HayTypes.func)).toBe(true);
+    let results = hay.check(_, HayTypes.func);
+    expect(results).toBe(true);
+    //expect(results.getMessage()).toBeUndefined();
   });
 
   [1, 0, 1.01, -123, {}, true, false, "asd", []].forEach(_ => {
-    expect(hay.check(_, HayTypes.func)).toBe(false);
+    let results = hay.check(_, HayTypes.func);
+    expect(results).toBe(false);
+    //expect(results.getMessage()).toBeDefined();
   });
 });
 

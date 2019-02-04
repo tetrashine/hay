@@ -1,9 +1,73 @@
-const number = (obj) => Empty(obj) || typeof(obj) === "number";
-const string = (obj) => Empty(obj) || typeof(obj) === "string";
-const bool = (obj) => Empty(obj) || typeof(obj) === "boolean";
-const object = (obj) => Empty(obj) || typeof(obj) === "object" && !array(obj);
-const array = (obj) => Empty(obj) || Array.isArray(obj);
-const func = (obj) => Empty(obj) || {}.toString.call(obj) === '[object Function]';
+const parse = function(obj) {
+  let parsed;
+
+  if (obj && typeof(obj) === "object" && !Array.isArray(obj)) {
+    let inner = {};
+    
+    Object.keys(obj).map((key, i) => {
+      inner[key] = parse(obj[key]);
+    });
+
+    parsed = {
+      target: inner,
+    };
+    
+  } else if (Array.isArray(obj)) {
+    parsed = {
+      target: obj.map(_ => {
+        return parse(_);
+      }),
+    };
+  } else {
+    parsed = {
+      target: obj,
+    };
+  }
+
+  return parsed;
+}
+
+const generateErrorMsg = (outlet, obj, type) => {
+  if (outlet) {
+    outlet.messages.push({
+      obj: obj,
+      type: type,
+      message: `Expect '${obj}' to be type:${type}`,
+    });
+  }
+  
+  return false;
+};
+
+const generateKeyErrorMsg = (outlet, key, obj, type) => {
+  if (outlet) {
+    outlet.messages.push({
+      obj: obj,
+      type: type,
+      message: `Expect ${key}:${obj} to be type:${type}`,
+    });
+  }
+
+  return false;
+};
+
+const generateNonEmptyMsg = (outlet, obj) => {
+  if (outlet) {
+    outlet.messages.push({
+      obj: obj,
+      message: `Required but received empty.`,
+    });
+  }
+
+  return false;
+};
+
+const number = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "number")) || generateErrorMsg(outlet, obj, "number");
+const string = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "string")) || generateErrorMsg(outlet, obj, "string");
+const bool = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "boolean")) || generateErrorMsg(outlet, obj, "boolean");
+const object = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "object" && !array(obj))) || generateErrorMsg(outlet, obj, "object");
+const array = (obj, outlet) => (obj && (Empty(obj.target) || Array.isArray(obj.target))) || generateErrorMsg(outlet, obj, "array");
+const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj.target) === '[object Function]')) || generateErrorMsg(outlet, obj, "function");
 
 const mapping = {
   number: number,
@@ -14,21 +78,24 @@ const mapping = {
   func: func,
 };
 
-const oneOf = (types) => (obj) => {
-  return types.some(type => type(obj));
+const oneOf = (types) => (obj, outlet) => {
+  return types.some((type, i) => type(obj, outlet));
 };
 
-const shapeOf = template => obj => {
-  return !Empty(obj) 
-    && (object(obj) && Object.keys(template).every(key => {
-      return template[key](obj[key]);
-    })) 
-    || (func(template) && template(obj));
+const shapeOf = template => (obj, outlet) => {
+  return !Empty(obj.target)
+    && (object(obj) && Object.keys(template).map((key, i) => {
+      const ret = template[key](obj.target[key], outlet);
+      return ret;
+    }).every(_ => {
+      return _;
+    }))
+    || (func({ target: template }) && template(obj, outlet));
 };
 
-const Empty = obj => obj === undefined || obj === null;
-const Required = type => obj => { return !Empty(obj) && type(obj); };
-const ArrayOfFunc = type => objs => (array(objs) && objs.every(obj => type(obj)));
+const Empty = (obj) => obj === undefined || obj === null;
+const Required = type => (obj, outlet) => { return ((obj && !Empty(obj.target, outlet)) || generateNonEmptyMsg(outlet, obj)) && type(obj, outlet); };
+const ArrayOfFunc = type => (objs, outlet) => (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
 
 const arrayOf = {};
 Object.keys(mapping).forEach(key => {
@@ -39,4 +106,4 @@ Object.keys(mapping).forEach(key => {
   type.isRequired = Required(type);
 });
 
-export {number, string, bool, object, array, func, oneOf, arrayOf, shapeOf};
+export {number, string, bool, object, array, func, oneOf, arrayOf, shapeOf, parse};
