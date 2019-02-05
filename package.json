@@ -1,6 +1,6 @@
 {
-  "name": "hay",
-  "version": "0.0.4",
+  "name": "@lengin/hay",
+  "version": "0.1.0",
   "description": "Run-time checking of javascript types",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,48 @@
     "jest": "^24.0.0",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "asn1.js": "^4.10.1",
+    "browserify-des": "^1.0.2",
+    "buffer": "^4.9.1",
+    "create-ecdh": "^4.0.3",
+    "des.js": "^1.0.0",
+    "elliptic": "^6.4.1",
+    "evp_bytestokey": "^1.0.3",
+    "fs-write-stream-atomic": "^1.0.10",
+    "from2": "^2.3.0",
+    "fsevents": "^1.2.7",
+    "hash-base": "^3.0.4",
+    "hmac-drbg": "^1.0.1",
+    "hash.js": "^1.1.7",
+    "ieee754": "^1.1.12",
+    "https-browserify": "^1.0.0",
+    "iferr": "^0.1.5",
+    "indexof": "^0.0.1",
+    "is-binary-path": "^1.0.1",
+    "is-extglob": "^2.1.1",
+    "is-glob": "^4.0.0",
+    "lodash.debounce": "^4.0.8",
+    "md5.js": "^1.3.5",
+    "miller-rabin": "^4.0.1",
+    "minimalistic-assert": "^1.0.1",
+    "minimalistic-crypto-utils": "^1.0.1",
+    "nan": "^2.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetrashine/hay.git"
+  },
+  "keywords": [
+    "Type",
+    "check"
+  ],
+  "bugs": {
+    "url": "https://github.com/tetrashine/hay/issues"
+  },
+  "homepage": "https://github.com/tetrashine/hay#readme"
 }

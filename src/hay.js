@@ -24,7 +24,7 @@ class Hay {
       parsed: parsed,
     };
 
-    return rules(parsed, this.outlet);
+    return rules(parsed, this._messages);
   }
 
   getMessages() {

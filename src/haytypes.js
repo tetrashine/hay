@@ -1,6 +1,9 @@
+// function to parse object by by adding a thin wrapper for checks
+// to be able to map message back to object for highlight
 const parse = function(obj) {
   let parsed;
 
+  //object
   if (obj && typeof(obj) === "object" && !Array.isArray(obj)) {
     let inner = {};
     
@@ -11,13 +14,16 @@ const parse = function(obj) {
     parsed = {
       target: inner,
     };
-    
+  
+  //array
   } else if (Array.isArray(obj)) {
     parsed = {
       target: obj.map(_ => {
         return parse(_);
       }),
     };
+
+  //the rest
   } else {
     parsed = {
       target: obj,
@@ -29,22 +35,10 @@ const parse = function(obj) {
 
 const generateErrorMsg = (outlet, obj, type) => {
   if (outlet) {
-    outlet.messages.push({
+    outlet.push({
       obj: obj,
       type: type,
-      message: `Expect '${obj}' to be type:${type}`,
-    });
-  }
-  
-  return false;
-};
-
-const generateKeyErrorMsg = (outlet, key, obj, type) => {
-  if (outlet) {
-    outlet.messages.push({
-      obj: obj,
-      type: type,
-      message: `Expect ${key}:${obj} to be type:${type}`,
+      message: `Expect '${obj}' to be 'type:${type}'`,
     });
   }
 
@@ -53,7 +47,7 @@ const generateKeyErrorMsg = (outlet, key, obj, type) => {
 
 const generateNonEmptyMsg = (outlet, obj) => {
   if (outlet) {
-    outlet.messages.push({
+    outlet.push({
       obj: obj,
       message: `Required but received empty.`,
     });
