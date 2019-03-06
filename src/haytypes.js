@@ -63,14 +63,32 @@ const object = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target)
 const array = (obj, outlet) => (obj && (Empty(obj.target) || Array.isArray(obj.target))) || generateErrorMsg(outlet, obj, "array");
 const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj.target) === '[object Function]')) || generateErrorMsg(outlet, obj, "function");
 
-const mapping = {
-  number: number,
-  string: string,
-  bool: bool,
-  object: object,
-  array: array,
-  func: func,
+const equalLength = (type) => (obj, outlet) => {
+  let res = type(obj, outlet) && Array.isArray(obj.target);
+  let length = obj.target[0].target.length
+  let res2 = obj.target.every(_ => {
+    return _.target.length = length;
+  });
+
+  return res && res2;
 };
+
+const generatorFunc = (type) => (generator) => (obj, outlet) => {
+  let generatorFunction = (function*(){}).constructor;
+  if (!(generator instanceof generatorFunction)) { throw 'Invalid generator function'; }
+
+  let gen = generator();
+  return type(obj, outlet) && obj.target.every(_ => {
+    return gen.next().value(_);
+  });
+};
+
+//  number - positive, negative, even, odd, 
+//  string - equalLength, 
+//  object - 
+//  array - shapeOf, generatorFunc
+//  func - 
+array.withGeneratorFunc = generatorFunc(array);
 
 const oneOf = (types) => (obj, outlet) => {
   return types.some((type, i) => type(obj, outlet));
@@ -84,17 +102,24 @@ const shapeOf = template => (obj, outlet) => {
     }).every(_ => {
       return _;
     }))
-    || (func({ target: template }) && template(obj, outlet));
+    || (func({ target: template }) && template(obj, outlet))
+    || (Array.isArray(obj) && Array.isArray(template) && obj.map((item, index) => {
+      return template[index](item); 
+    }));
 };
 
 const Empty = (obj) => obj === undefined || obj === null;
 const Required = type => (obj, outlet) => { return ((obj && !Empty(obj.target, outlet)) || generateNonEmptyMsg(outlet, obj)) && type(obj, outlet); };
 const ArrayOfFunc = type => (objs, outlet) => (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
 
-const arrayOf = {};
-Object.keys(mapping).forEach(key => {
-  arrayOf[key] = ArrayOfFunc(mapping[key]);
-});
+
+// arrayOf type: function(hayType)
+//  To check to whether the target is an array of hayType
+const arrayOf = (type) => (objs, outlet) => {
+  //check if type is of hayType
+
+  return (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
+};
 
 [number, string, bool, object, array, func].forEach(type => {
   type.isRequired = Required(type);

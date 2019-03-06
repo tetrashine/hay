@@ -1,1 +1,1 @@
-export default './src/hay';
+export { hay, HayTypes } './src/hay';

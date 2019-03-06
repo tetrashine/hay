@@ -12,7 +12,7 @@ class Hay {
     return `<span class='${opts.class}'>${text}</span>`;
   }
 
-  check(obj, rules) {
+  check(obj, ruleOrRules) {
     this._messages = [];
     this._display = {};
 
@@ -24,7 +24,9 @@ class Hay {
       parsed: parsed,
     };
 
-    return rules(parsed, this._messages);
+    return Array.isArray(ruleOrRules) ? ruleOrRules.every(rule => {
+      return rule(parsed, this._messages);
+    }) : ruleOrRules(parsed, this._messages);
   }
 
   getMessages() {

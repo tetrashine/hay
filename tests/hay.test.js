@@ -124,15 +124,31 @@ test('check oneOf', () => {
 });
 
 test('check arrayOf', () => {
-  expect(hay.check([1], HayTypes.arrayOf.number)).toBe(true);
-  expect(hay.check([""], HayTypes.arrayOf.string)).toBe(true);
-  expect(hay.check([true], HayTypes.arrayOf.bool)).toBe(true);
-  expect(hay.check([{}], HayTypes.arrayOf.object)).toBe(true);
-  expect(hay.check([[]], HayTypes.arrayOf.array)).toBe(true);
-  expect(hay.check([function() {}], HayTypes.arrayOf.func)).toBe(true);
+  expect(hay.check([1], HayTypes.arrayOf(HayTypes.number))).toBe(true);
+  expect(hay.check([""], HayTypes.arrayOf(HayTypes.string))).toBe(true);
+  expect(hay.check([true], HayTypes.arrayOf(HayTypes.bool))).toBe(true);
+  expect(hay.check([{}], HayTypes.arrayOf(HayTypes.object))).toBe(true);
+  expect(hay.check([[]], HayTypes.arrayOf(HayTypes.array))).toBe(true);
+  expect(hay.check([function() {}], HayTypes.arrayOf(HayTypes.func))).toBe(true);
 
-  expect(hay.check({}, HayTypes.arrayOf.number)).toBe(false);
-  expect(hay.check([""], HayTypes.arrayOf.number)).toBe(false);
+  expect(hay.check({}, HayTypes.arrayOf(HayTypes.number))).toBe(false);
+  expect(hay.check([""], HayTypes.arrayOf(HayTypes.number))).toBe(false);
+});
+
+test('check arrayOf(array.withGeneratorFunc)', () => {
+  expect(hay.check([[1]], HayTypes.arrayOf(HayTypes.array.withGeneratorFunc(function*() {
+    while(true) {
+      yield HayTypes.number;
+    }
+  })))).toBe(true);
+
+  function expectError() {
+    hay.check([1], HayTypes.arrayOf(HayTypes.array.withGeneratorFunc(function() {
+      return true
+    })));
+  }
+
+  expect(expectError).toThrowError('Invalid generator function');
 });
 
 test('check shapeOf', () => {
