@@ -4,7 +4,9 @@
   "description": "Run-time checking of javascript types",
   "main": "index.js",
   "scripts": {
-    "start": "webpack",
+    "start": "npm run build:dev & npm run build:prd",
+    "build:dev": "webpack --env=development",
+    "build:prd": "webpack --env=production",
     "test": "jest --watchAll"
   },
   "author": "louisz",

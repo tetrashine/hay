@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lengin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .highlighted { background-color: #ff0; }
+      #check1 {
+        border: solid 1px #f00;
+      }
+      #check2 {
+        border: solid 1px #0f0;
+      }
+      #check3 {
+        border: solid 1px #00f;
+      }
+    </style>
+    <script src="../dist/bundle.js"></script>
+  </head>
+  <body>
+    hello world
+    <pre>
+      <div id="check1"></div>
+      <div id="check2"></div>
+      <div id="check3"></div>
+    </pre>
+  </body>
+  <script>
+    var obj1 = 123;
+
+    var obj2 = {
+      age: 18,
+      sizes: {
+        uk: 8,
+        us: 6.5,
+      },
+      val:18,
+      contacts: [1234567, 2345678, 3456789],
+    };
+
+    var obj3 = {
+      name: "Derrick",
+      sizes: {
+        uk: 8,
+        us: 6.5,
+      },
+      contacts: [1234567, 2345678, 3456789],
+    };
+
+    var obj4 = {
+      val: "asd",
+      name: "asd",
+    };
+
+    var rules = HayTypes.shapeOf({
+      name: HayTypes.string.isRequired,
+      age: HayTypes.string,
+      sizes: HayTypes.object,
+      val: HayTypes.number,
+      contacts: HayTypes.arrayOf.number,
+    });
+
+   /* console.log(Hay.check(obj1, HayTypes.string));
+    var outlet = Hay.getMessages();
+    console.log(outlet[0]);
+    document.getElementById("check1").innerHTML = outlet[1];*/
+
+    
+    Hay.check(obj2, rules);
+    outlet = Hay.getMessages();
+    document.getElementById("check2").innerHTML = outlet[1];
+
+    document.getElementById("check3").innerHTML = outlet[0].map((_, index) => {
+      return `${index+1}: ${_.message}`;
+    }).join('\n');
+/*
+    console.log(Hay.check(obj3, rules));
+    outlet = Hay.getMessages();
+    console.log(outlet[0]);
+    document.getElementById("check3").innerHTML = outlet[1];*/
+  </script>
+</html>
