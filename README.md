@@ -62,15 +62,7 @@ Function-based
 HayTypes.array
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|
-| withGeneratorFunc | Takes in a generator function which the function needs to return the HayType each time it is called when checking through the array. | function*() {
-    while(true) {
-      yield HayTypes.number;
-    }
-  } | HayTypes.array.withGeneratorFunc(function*() {
-    while(true) {
-      yield HayTypes.number;
-    }
-  }) |
+| withGeneratorFunc | Takes in a generator function which the function needs to return the HayType each time it is called when checking through the array. | function*() { while(true) { yield HayTypes.number; } } | HayTypes.array.withGeneratorFunc(function*() { while(true) { yield HayTypes.number; }}) |
 
 ```sh
 Hay.check({ a: 1 }, HayTypes.object);
