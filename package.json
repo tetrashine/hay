@@ -1,6 +1,6 @@
 {
   "name": "@lengin/hay",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Run-time checking of javascript types",
   "main": "index.js",
   "scripts": {
