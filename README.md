@@ -11,20 +11,23 @@ Using npm:
 ```sh
 npm install --save-dev @lengin/hay
 ```
-
+&NewLine;
+&NewLine;
 ## Sample Code
 
 Importing Hay
 ```sh
 import { Hay, HayTypes } from '@lengin/hay';
 ```
-
+&NewLine;
+&NewLine;
 Check for validity
 ```sh
 let obj = ...
 Hay.check(obj, HayTypes.object);  //return boolean
 ```
-
+&NewLine;
+&NewLine;
 Get object with display highlights & error messages
 ```sh
 let output = Hay.getMessages();
@@ -35,7 +38,8 @@ let output = Hay.getMessages();
 ```sh
 Hay.check({ a: 1 }, HayTypes.object);
 ```
-
+&NewLine;
+&NewLine;
 ## Documentation
 
 ### HayTypes
@@ -49,19 +53,22 @@ Object-based
 | object | Return true if target is an object | {} | HayTypes.object |
 | array | Return true if target is a array | [] | HayTypes.array |
 | func | Return true if target is a function | function() {} | HayTypes.func |
-
+&NewLine;
+&NewLine;
 Add-on
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|
 | required | Besides the rule used, the object need to exist. | - | HayTypes.number.required |
-
+&NewLine;
+&NewLine;
 Function-based
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|
 | oneOf | Takes in an array of HayType. Return true if target type is any one of them. | [HayTypes.number, HayTypes.string] | HayTypes.oneOf([HayTypes.number, HayTypes.string]) |
 | arrayOf | Takes in a HayType. Return true if type of target is an array of them. | HayTypes.number, HayTypes.string | HayTypes.arrayOf(HayTypes.number) |
 | shapeOf | Takes in an Object. Return true if shape of target is the same. | { 'val': HayTypes.number } | HayTypes.shapeOf({ 'val': HayTypes.number }) |
-
+&NewLine;
+&NewLine;
 HayTypes.array
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|
