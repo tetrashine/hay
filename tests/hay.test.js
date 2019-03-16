@@ -135,6 +135,16 @@ test('check arrayOf', () => {
   expect(hay.check([""], HayTypes.arrayOf(HayTypes.number))).toBe(false);
 });
 
+test('check arrayOf.itemsOfEqualLength', () => {
+  expect(hay.check([
+    [1,2,3], [1,4,5], [1,6,7], [1,9,3]
+  ], HayTypes.arrayOf.itemsOfEqualLength)).toBe(true);
+
+  expect(hay.check([
+    [1,2,3], [1,4,5], [1,6,7], [1,9,3,4]
+  ], HayTypes.arrayOf.itemsOfEqualLength)).toBe(false);
+});
+
 test('check arrayOf(array.withFunc)', () => {
   expect(hay.check([[1]], HayTypes.arrayOf(HayTypes.array.withFunc(function(obj, index) {
     return ([HayTypes.number][index])(obj);

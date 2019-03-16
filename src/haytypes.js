@@ -63,14 +63,13 @@ const object = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target)
 const array = (obj, outlet) => (obj && (Empty(obj.target) || Array.isArray(obj.target))) || generateErrorMsg(outlet, obj, "array");
 const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj.target) === '[object Function]')) || generateErrorMsg(outlet, obj, "function");
 
-const equalLength = (type) => (obj, outlet) => {
-  let res = type(obj, outlet) && Array.isArray(obj.target);
-  let length = obj.target[0].target.length
-  let res2 = obj.target.every(_ => {
-    return _.target.length = length;
-  });
+Array.prototype.equal = function(callback) {
+  if (this.length == 0) return true;
 
-  return res && res2;
+  let first = callback(this[0], 0);
+  return this.every((item, index) => {
+    return callback(item, index) == first;
+  });
 };
 
 const generatorFunc = (type) => (generator) => (obj, outlet) => {
@@ -119,7 +118,6 @@ const shapeOf = template => (obj, outlet) => {
 
 const Empty = (obj) => obj === undefined || obj === null;
 const Required = type => (obj, outlet) => { return ((obj && !Empty(obj.target, outlet)) || generateNonEmptyMsg(outlet, obj)) && type(obj, outlet); };
-const ArrayOfFunc = type => (objs, outlet) => (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
 
 
 // arrayOf type: function(hayType)
@@ -128,6 +126,10 @@ const arrayOf = (type) => (objs, outlet) => {
   //check if type is of hayType
 
   return (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
+};
+
+arrayOf.itemsOfEqualLength = (objs) => {
+  return array(objs) && objs.target.equal(_ => _.target.length);
 };
 
 [number, string, bool, object, array, func].forEach(type => {

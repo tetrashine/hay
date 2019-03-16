@@ -74,6 +74,9 @@ HayTypes.array
 | -----|-------------|-------------------|-------|
 | withFunc | Takes in a function which the function needs to return the HayType each time it is called when checking through the array. | function(obj, index) { return ([HayTypes.number][index])(obj); } | HayTypes.array.withFunc(function(obj, index) { return ([HayTypes.number][index])(obj); }) |
 | withGeneratorFunc | Takes in a generator function which the function needs to return the HayType each time it is called when checking through the array. | function*() { while(true) { yield HayTypes.number; } } | HayTypes.array.withGeneratorFunc(function*() { while(true) { yield HayTypes.number; }}) |
-
-
-
+&nbsp;
+&nbsp;
+HayTypes.arrayOf
+| Type | Description | Positive Examples | Usage |
+| -----|-------------|-------------------|-------|
+| itemsOfEqualLength | Return true if all items are array of equal length. | [[], [], []] | HayTypes.arrayOf.itemsOfEqualLength([[], [], []])) |
