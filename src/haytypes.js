@@ -83,11 +83,20 @@ const generatorFunc = (type) => (generator) => (obj, outlet) => {
   });
 };
 
+const iterativeFunc = (type) => userFunc => (obj, outlet) => {
+  if (!func({ target: userFunc })) { throw 'Invalid function'; }
+
+  return type(obj, outlet) && obj.target.every((_, index) => {
+    return userFunc(_, index);
+  });
+}
+
 //  number - positive, negative, even, odd, 
 //  string - equalLength, 
 //  object - 
 //  array - shapeOf, generatorFunc
 //  func - 
+array.withFunc = iterativeFunc(array);
 array.withGeneratorFunc = generatorFunc(array);
 
 const oneOf = (types) => (obj, outlet) => {

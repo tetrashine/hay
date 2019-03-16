@@ -135,6 +135,18 @@ test('check arrayOf', () => {
   expect(hay.check([""], HayTypes.arrayOf(HayTypes.number))).toBe(false);
 });
 
+test('check arrayOf(array.withFunc)', () => {
+  expect(hay.check([[1]], HayTypes.arrayOf(HayTypes.array.withFunc(function(obj, index) {
+    return ([HayTypes.number][index])(obj);
+  })))).toBe(true);
+
+  function expectError() {
+    hay.check([1], HayTypes.arrayOf(HayTypes.array.withFunc(13)));
+  }
+
+  expect(expectError).toThrowError('Invalid function');
+});
+
 test('check arrayOf(array.withGeneratorFunc)', () => {
   expect(hay.check([[1]], HayTypes.arrayOf(HayTypes.array.withGeneratorFunc(function*() {
     while(true) {
