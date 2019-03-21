@@ -1,6 +1,6 @@
 # What is Hay?
 
-Hay is for execution of run-time type checks. Similar to React Type checks,  except that this library is for undetermined result object (e.g. input from user).
+Hay is for execution of run-time type checks. Similar to React Type checks,  except that this library was originally written for nondeterministic result object (e.g. input from user).
 
 A use case for writing this library is writting an internal tool for data analytics display to ensure the transformed data matches the input type of different charts (e.g. bar chart, pie chart, etc...).
 
