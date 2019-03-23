@@ -129,6 +129,15 @@ const arrayOf = (type) => (objs, outlet) => {
   return (array(objs) && objs.target.every((obj, i) => type(obj, outlet)));
 };
 
+arrayOf.uniqueItems = (objs) => {
+  const hold = {};
+  return objs.target.every(({target}) => {
+    let ret = !(hold[target] && hold[target] === target);
+    hold[target] = target;
+    return ret;
+  });
+};
+
 arrayOf.itemsOfEqualLength = (objs) => {
   return array(objs) && objs.target.equal(_ => _.target.length);
 };

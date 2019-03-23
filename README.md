@@ -76,6 +76,7 @@ HayTypes.array
 | -----|-------------|-------------------|-------|
 | withFunc | Takes in a function which the function needs to return the HayType each time it is called when checking through the array. | function(obj, index) { return ([HayTypes.number][index])(obj); } | HayTypes.array.withFunc(function(obj, index) { return ([HayTypes.number][index])(obj); }) |
 | withGeneratorFunc | Takes in a generator function which the function needs to return the HayType each time it is called when checking through the array. | function*() { while(true) { yield HayTypes.number; } } | HayTypes.array.withGeneratorFunc(function*() { while(true) { yield HayTypes.number; }}) |
+| uniqueItems | Return true if item is an array with all unique items. | [1,2,3,4,5] | HayTypes.array.uniqueItems |
 &nbsp;
 &nbsp;
 HayTypes.arrayOf

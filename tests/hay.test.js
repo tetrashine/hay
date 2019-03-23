@@ -147,6 +147,21 @@ test('check arrayOf', () => {
   expect(hay.check([""], HayTypes.arrayOf(HayTypes.number))).toBe(false);
 });
 
+test('check arrayOf.uniqueItems', () => {
+
+  [
+    [1,2,3,4,5],
+    [1,2,3,4,5,'1'],
+    [1,'1', null, undefined],
+  ].forEach(_ => {
+    expect(hay.check(_, HayTypes.arrayOf.uniqueItems)).toBe(true);
+  });
+
+  expect(hay.check([
+    1, 1, 4, 5, 6
+  ], HayTypes.arrayOf.uniqueItems)).toBe(false);
+});
+
 test('check arrayOf.itemsOfEqualLength', () => {
   expect(hay.check([
     [1,2,3], [1,4,5], [1,6,7], [1,9,3]
