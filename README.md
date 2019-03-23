@@ -53,6 +53,8 @@ Object-based
 | object | Return true if target is an object | {} | HayTypes.object |
 | array | Return true if target is a array | [] | HayTypes.array |
 | func | Return true if target is a function | function() {} | HayTypes.func |
+| none | Return true if target is null or undefined | null or undefined | HayTypes.none |
+| generator | Return true if target is a generator function | function*() {} | HayTypes.generator |
 &NewLine;
 &NewLine;
 Add-on

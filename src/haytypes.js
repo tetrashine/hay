@@ -38,7 +38,7 @@ const generateErrorMsg = (outlet, obj, type) => {
     outlet.push({
       obj: obj,
       type: type,
-      message: `Expect '${obj}' to be 'type:${type}'`,
+      message: `Expect '${obj}' to be '${type}'`,
     });
   }
 
@@ -56,12 +56,14 @@ const generateNonEmptyMsg = (outlet, obj) => {
   return false;
 };
 
-const number = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "number")) || generateErrorMsg(outlet, obj, "number");
-const string = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "string")) || generateErrorMsg(outlet, obj, "string");
-const bool = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "boolean")) || generateErrorMsg(outlet, obj, "boolean");
-const object = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "object" && !array(obj))) || generateErrorMsg(outlet, obj, "object");
+const number = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "number")) || generateErrorMsg(outlet, obj, "type:number");
+const string = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "string")) || generateErrorMsg(outlet, obj, "type:string");
+const bool = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "boolean")) || generateErrorMsg(outlet, obj, "type:boolean");
+const object = (obj, outlet) => (obj && (Empty(obj.target) || typeof(obj.target) === "object" && !array(obj))) || generateErrorMsg(outlet, obj, "type:object");
 const array = (obj, outlet) => (obj && (Empty(obj.target) || Array.isArray(obj.target))) || generateErrorMsg(outlet, obj, "array");
-const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj.target) === '[object Function]')) || generateErrorMsg(outlet, obj, "function");
+const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj.target) === '[object Function]')) || generateErrorMsg(outlet, obj, "type:function");
+const none = (obj, outlet) => (Empty(obj.target) || generateErrorMsg(outlet, obj, "null or undefined"));
+const generator = (obj, outlet) => (obj && (Empty(obj.target) || obj.target instanceof (function*(){}).constructor)) || generateErrorMsg(outlet, obj, "type:generator function");
 
 Array.prototype.equal = function(callback) {
   if (this.length == 0) return true;
@@ -119,7 +121,6 @@ const shapeOf = template => (obj, outlet) => {
 const Empty = (obj) => obj === undefined || obj === null;
 const Required = type => (obj, outlet) => { return ((obj && !Empty(obj.target, outlet)) || generateNonEmptyMsg(outlet, obj)) && type(obj, outlet); };
 
-
 // arrayOf type: function(hayType)
 //  To check to whether the target is an array of hayType
 const arrayOf = (type) => (objs, outlet) => {
@@ -136,4 +137,4 @@ arrayOf.itemsOfEqualLength = (objs) => {
   type.isRequired = Required(type);
 });
 
-export {number, string, bool, object, array, func, oneOf, arrayOf, shapeOf, parse};
+export {number, string, bool, object, array, func, none, generator, oneOf, arrayOf, shapeOf, parse};

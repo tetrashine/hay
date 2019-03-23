@@ -1,4 +1,5 @@
 import * as Types from './haytypes';
+var version = require('../package.json').version;
 
 class Hay {
 
@@ -39,6 +40,10 @@ class Hay {
     return [this.outlet.messages, JSON.stringify(this.outlet.parsed, (key, val) => {
       return objs.some(_ => _ === val) ? this.wrap(val.target, this.opts) : val.target;
     }, "    ")];
+  }
+
+  getVersion() {
+    return version;
   }
 }
 
