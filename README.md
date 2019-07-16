@@ -71,12 +71,21 @@ Function-based
 | shapeOf | Takes in an Object. Return true if shape of target is the same. | { 'val': HayTypes.number } | HayTypes.shapeOf({ 'val': HayTypes.number }) |
 &NewLine;
 &NewLine;
+HayTypes.number
+| Type | Description | Positive Examples | Usage |
+| -----|-------------|-------------------|-------|
+| even| Return true if target is an even number | E.g. 0, 2, 4, 6 | HayTypes.number.even |
+| odd| Return true if target is an odd number | E.g. 1, 3, 5 | HayTypes.number.odd |
+| positive| Return true if target is a positive number | E.g. 1, 2, 3 | HayTypes.number.positive |
+| negative| Return true if target is a negative number | E.g. -1, -2, -3 | HayTypes.number.negative |
+
 HayTypes.array
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|
 | withFunc | Takes in a function which the function needs to return the HayType each time it is called when checking through the array. | function(obj, index) { return ([HayTypes.number][index])(obj); } | HayTypes.array.withFunc(function(obj, index) { return ([HayTypes.number][index])(obj); }) |
 | withGeneratorFunc | Takes in a generator function which the function needs to return the HayType each time it is called when checking through the array. | function*() { while(true) { yield HayTypes.number; } } | HayTypes.array.withGeneratorFunc(function*() { while(true) { yield HayTypes.number; }}) |
 | uniqueItems | Return true if item is an array with all unique items. | [1,2,3,4,5] | HayTypes.array.uniqueItems |
+
 &nbsp;
 &nbsp;
 HayTypes.arrayOf

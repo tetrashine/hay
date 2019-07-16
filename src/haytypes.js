@@ -65,6 +65,8 @@ const func = (obj, outlet) => (obj && (Empty(obj.target) || {}.toString.call(obj
 const none = (obj, outlet) => (Empty(obj.target) || generateErrorMsg(outlet, obj, "null or undefined"));
 const generator = (obj, outlet) => (obj && (Empty(obj.target) || obj.target instanceof (function*(){}).constructor)) || generateErrorMsg(outlet, obj, "type:generator function");
 
+
+
 Array.prototype.equal = function(callback) {
   if (this.length == 0) return true;
 
@@ -92,11 +94,36 @@ const iterativeFunc = (type) => userFunc => (obj, outlet) => {
   });
 }
 
+const numberHOC = (func) => (obj, outlet) => {
+  return number(obj, outlet) && func(obj, outlet);
+}
+
+const even = (obj, outlet) => {
+  return (obj && obj.target % 2 == 0) || generateErrorMsg(outlet, obj, "even");
+};
+
+const odd = (obj, outlet) => {
+  return (obj && obj.target % 2 !== 0) || generateErrorMsg(outlet, obj, "odd");
+};
+
+const positive = (obj, outlet) => {
+  return (obj && obj.target >= 0) || generateErrorMsg(outlet, obj, "positive");
+}
+
+const negative = (obj, outlet) => {
+  return (obj && obj.target < 0) || generateErrorMsg(outlet, obj, "negative");
+}
+
 //  number - positive, negative, even, odd, 
-//  string - equalLength, 
+//  string - equalLength, email, 
 //  object - 
 //  array - shapeOf, generatorFunc
 //  func - 
+number.even = numberHOC(even);
+number.odd = numberHOC(odd);
+number.positive = numberHOC(positive);
+number.negative = numberHOC(negative);
+
 array.withFunc = iterativeFunc(array);
 array.withGeneratorFunc = generatorFunc(array);
 

@@ -12,6 +12,19 @@ test('check number type', () => {
   });
 });
 
+test('check number even', () => {
+  [0, 2, 4, 6, 8].forEach(_ => {
+    let results = hay.check(_, HayTypes.number.even);
+    console.log(results);
+    expect(results).toBe(true);
+  });
+
+  [1, 3, 5, 7, '', false].forEach(_ => {
+    let results = hay.check(_, HayTypes.number.even);
+    expect(results).toBe(false);
+  });
+});
+
 test('check string type', () => {
   ["", "asd", undefined, null].forEach(_ => {
     let results = hay.check(_, HayTypes.string);
