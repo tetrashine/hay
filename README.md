@@ -79,6 +79,12 @@ HayTypes.number
 | positive| Return true if target is a positive number | E.g. 1, 2, 3 | HayTypes.number.positive |
 | negative| Return true if target is a negative number | E.g. -1, -2, -3 | HayTypes.number.negative |
 
+#### HayTypes.string
+| Type | Description | Positive Examples | Usage |
+| -----|-------------|-------------------|-------|
+| min(input) | Return true if at least of input length | E.g. '123', '1234', '12345' | HayTypes.string.min(3) |
+| max(input) | Return true if at most of input length | E.g. '1', '12', '123' | HayTypes.string.max(3) |
+
 HayTypes.array
 | Type | Description | Positive Examples | Usage |
 | -----|-------------|-------------------|-------|

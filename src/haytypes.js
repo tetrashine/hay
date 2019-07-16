@@ -94,9 +94,9 @@ const iterativeFunc = (type) => userFunc => (obj, outlet) => {
   });
 }
 
-const numberHOC = (func) => (obj, outlet) => {
-  return number(obj, outlet) && func(obj, outlet);
-}
+const typeHOC = (typeFunc) => (func) => (obj, outlet) => {
+  return typeFunc(obj, outlet) && func(obj, outlet);
+};
 
 const even = (obj, outlet) => {
   return (obj && obj.target % 2 == 0) || generateErrorMsg(outlet, obj, "even");
@@ -114,15 +114,26 @@ const negative = (obj, outlet) => {
   return (obj && obj.target < 0) || generateErrorMsg(outlet, obj, "negative");
 }
 
+const min = (minLength) => (obj, outlet) => {
+  return (obj && obj.target.length >= minLength) || generateErrorMsg(outlet, obj, `minimum length of ${minLength}`);
+}
+
+const max = (maxLength) => (obj, outlet) => {
+  return (obj && obj.target.length <= maxLength) || generateErrorMsg(outlet, obj, `maximum length of ${maxLength}`);
+}
+
 //  number - positive, negative, even, odd, 
-//  string - equalLength, email, 
+//  string - email, min, max
 //  object - 
 //  array - shapeOf, generatorFunc
 //  func - 
-number.even = numberHOC(even);
-number.odd = numberHOC(odd);
-number.positive = numberHOC(positive);
-number.negative = numberHOC(negative);
+number.even = typeHOC(number)(even);
+number.odd = typeHOC(number)(odd);
+number.positive = typeHOC(number)(positive);
+number.negative = typeHOC(number)(negative);
+
+string.min = typeHOC(string)(min);
+string.max = typeHOC(string)(max);
 
 array.withFunc = iterativeFunc(array);
 array.withGeneratorFunc = generatorFunc(array);

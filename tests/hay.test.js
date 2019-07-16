@@ -37,6 +37,30 @@ test('check string type', () => {
   });
 });
 
+test('check string min', () => {
+  ["aaa", "aaaa", "aaaaa"].forEach(_ => {
+    let results = hay.check(_, HayTypes.string.min(3));
+    expect(results).toBe(true);
+  });
+
+  ["aaa", "aaaa", "aaaaa"].forEach(_ => {
+    let results = hay.check(_, HayTypes.string.min(6));
+    expect(results).toBe(false);
+  });
+});
+
+test('check string max', () => {
+  ["aaa", "aaaa", "aaaaa"].forEach(_ => {
+    let results = hay.check(_, HayTypes.string.max(5));
+    expect(results).toBe(true);
+  });
+
+  ["aaa", "aaaa", "aaaaa"].forEach(_ => {
+    let results = hay.check(_, HayTypes.string.max(2));
+    expect(results).toBe(false);
+  });
+});
+
 test('check bool type', () => {
   [true, false, undefined, null].forEach(_ => {
     let results = hay.check(_, HayTypes.bool);
